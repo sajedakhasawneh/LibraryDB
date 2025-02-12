@@ -1,0 +1,240 @@
+create database Library_Database_Managemnt_System ;
+
+create table libraryStaff (
+ID int primary key,
+Name varchar(50),
+ContactInfo varchar(50),
+Section varchar(50),
+EmpDate Date 
+);
+
+create table Members(
+ID int primary key,
+Name varchar(50) not null,
+ConactInfo varchar(50),
+Membership varchar(20),
+RegesterDate Date
+);
+
+create table category (
+ID int primary key,
+Name varchar(50),
+Cdescription varchar(500)
+);
+
+create table Books (
+ID int primary key,
+Title varchar(100) not null,
+Author varchar(50) not null,
+Genre varchar(50),
+Publication Date,
+AvailableStatus varchar(10),
+CategoryID int,
+Foreign key (CategoryID) references Category (ID)
+);
+
+create table Borrwoing(
+ID int primary key,
+BorrowingDate Date,
+dueDate Date,
+returnDate Date,
+MemberID int,
+BookID int ,
+Foreign key (MemberID) references Members (ID),
+Foreign key (BookID) references Books (ID) 
+);
+
+create table Reservation (
+ID int primary key,
+ReservationDate Date,
+ReserveStatus varchar(15),
+MemberID int,
+BookID int ,
+Foreign key (MemberID) references Members (ID),
+Foreign key (BookID) references Books (ID)
+);
+
+create table Fines(
+ID int primary key,
+Amount float,
+PaymantStatus varchar(10),
+BorrowingID int unique,
+Foreign key (BorrowingID) references Borrwoing (ID)
+);
+
+
+insert into libraryStaff
+values
+(1,'Hassan Al-Farouqi','hassan@mail.com','Lending & Circulation','2022-06-15'),
+(2,'Leila Al-Nasseri'	,'leila@mail.com',	'Reference Services',	'2021-09-10'),
+(3,'Nasser Al-Mutairi',	'nasser@mail.com','Cataloging & Metadata','2023-03-05'),
+(4,'Samira Al-Jabari','samira@mail.com','Childrens Literature','2020-12-01'),
+(5,'Tariq Al-Hamadi','tariq@mail.com','Periodicals & Archives','2022-08-20');
+
+insert into Members
+values
+(1,	'Khalid Al-Farsi','07777777777','Student','2024-01-15'),
+(2,	'Aisha Al-Mansouri','07777777778','Teacher','2023-12-10'),
+(3,	'Omar Al-Rashid','07777777779','Visitor','2024-02-05'),
+(4,	'Fatima Al-Zayani',	'07777777710','Student','2023-11-25'),
+(5,	'Youssef Al-Dabbagh','07777777177','Teacher','2024-01-30');
+
+insert into category
+values
+(1, 'Fiction', 'Novels and stories from various genres.'),
+(2, 'Non-Fiction', 'Informative books based on real events & facts.'),
+(3, 'Science & Tech', 'Books on science, technology, and innovation.'),
+(4, 'History', 'Books about historical events and figures.'),
+(5, 'Children’s Books', 'Literature for young readers and kids.');
+
+INSERT INTO Category 
+VALUES (6, 'Technology', 'Books related to modern technology and computing.');
+
+insert into Books 
+values 
+(1, 'The Sands of Time', 'Ahmed Al-Fayez', 'Fiction', '2018-05-12', 'Available', 1),
+(2, 'Arabian Nights: A Retelling', 'Layla Al-Hakim', 'Fantasy', '2020-09-15', 'Borrowed', 1),
+(3, 'The Wisdom of the Desert', 'Omar Al-Khatib', 'Philosophy', '2015-07-20', 'Available', 2),
+(4, 'The Golden Dunes', 'Fatima Al-Sayed', 'Adventure', '2019-03-10', 'Borrowed', 1),
+(5, 'Secrets of the Oasis', 'Youssef Al-Badawi', 'Mystery', '2021-11-25', 'Available', 3);
+
+INSERT INTO Books
+VALUES
+(6, 'The Innovators', 'Walter Isaacson', 'Technology', '2014-10-07', 'Available', 6),
+(7, 'Clean Code', 'Robert C. Martin', 'Technology', '2008-08-01', 'Borrowed', 6),
+(8, 'The Pragmatic Programmer', 'Andrew Hunt, David Thomas', 'Technology', '1999-10-30', 'Available', 6),
+(9, 'Artificial Intelligence: A Guide for Thinking Humans', 'Melanie Mitchell', 'Technology', '2019-10-15', 'Available', 6);
+
+
+insert into Borrwoing
+values
+(1, '2024-01-10', '2024-01-24', '2024-01-22', 1, 7),
+(2, '2024-02-01', '2024-02-15', NULL, 2, 5),  -- Book not yet returned
+(3, '2024-01-25', '2024-02-08', '2024-02-07', 3, 2),
+(4, '2024-02-05', '2024-02-19', NULL, 4, 1),  -- Book not yet returned
+(5, '2024-01-15', '2024-01-29', '2024-01-28', 5, 7);
+
+
+insert into Borrwoing
+values
+(8, '2024-01-10', '2024-01-24', '2024-01-30', 1, 8),
+(9, '2024-10-10', '2024-10-24', '2024-11-01', 2, 3),
+(12, '2024-12-02', '2024-12-14', Null , 5, 7),
+(18, '2025-1-10', '2025-01-24', '2025-01-30', 3, 8);
+
+insert into Borrwoing
+values
+(25, '2025-1-12', '2025-01-21', '2025-02-01', 4, 9),
+(26, '2024-12-02', '2024-12-14', Null , 5, 7),
+(27, '2025-1-10', '2025-01-24', '2025-01-30', 3, 8),
+(28, '2025-1-10', '2025-01-25', '2025-02-01', 2, 8);
+
+
+insert into Borrwoing
+values
+(13, '2024-02-01', '2024-02-16', '2024-02-15', 1, 3),
+(14, '2024-11-10', '2024-11-24', '2024-12-01', 2, 3),
+(15, '2024-12-02', '2024-12-14', Null , 5, 4);
+
+
+insert into Reservation
+values
+(1, '2024-02-01', 'Pending', 1, 2),
+(2, '2024-02-05', 'Completed', 3, 4),
+(3, '2024-02-08', 'Cancelled', 2, 5),
+(4, '2024-02-10', 'Pending', 4, 1),
+(5, '2024-02-12', 'Completed', 5, 3);
+
+
+insert into Fines
+VALUES
+(1, 5.00, 'Paid', 1),
+(2, 10.50, 'Unpaid', 2),
+(3, 7.25, 'Paid', 3),
+(4, 12.00, 'Unpaid', 4),
+(5, 6.75, 'Paid', 5);
+
+
+
+--Questions 
+
+--1
+select Name 
+from Members
+where RegesterDate = '2024-01-15';
+
+
+--2
+select * 
+from Books
+where Title = 'The Golden Dunes';
+
+--3
+alter table Members 
+ADD Email varchar(50);
+
+--4
+insert into Members
+values
+(6,'Omar', '9876543210','Student','2024-06-05','Omar@gmail.com');
+
+--5
+select Members.Name, Reservation.ReserveStatus
+from Members
+inner join Reservation on Members.ID = Reservation.MemberID;
+
+--6
+select Members.Name, Books.Title
+from Members
+inner join Borrwoing on Members.ID=Borrwoing.MemberID
+inner join Books on Borrwoing.BookID=Books.ID
+where Books.Title ='The Pragmatic Programmer';
+
+--7
+select Members.Name,Books.Title, Books.AvailableStatus
+from Members 
+inner join Borrwoing on Members.ID = Borrwoing.MemberID
+inner join Books on  Borrwoing.BookID=Books.ID
+where Borrwoing.BorrowingDate is not null and Books.Title = 'Clean Code';
+
+
+
+--8
+select Members.Name
+From Members
+inner join Borrwoing on Members.ID=Borrwoing.MemberID
+inner join Books on Borrwoing.BookID=Books.ID
+where Borrwoing.returnDate > Borrwoing.dueDate;
+
+--9
+select Books.Title, Count(*)
+From Books
+inner join Borrwoing on Books.ID=Borrwoing.BookID
+inner join Members on Members.ID=Borrwoing.MemberID ---
+Group by Books.Title
+Having COUNT(*) > 3;
+
+
+--10
+select Members.Name, Borrwoing.BorrowingDate
+From Members
+inner join Borrwoing on Members.ID=Borrwoing.MemberID
+inner join Books on Borrwoing.BookID = Books.ID
+where Borrwoing.BorrowingDate between '2024-01-10' and '2024-01-15';
+
+
+--11 
+select Count(*)
+From Books
+where AvailableStatus = 'Available';
+
+--12
+select Members.Name, Books.Title, Borrwoing.BorrowingDate, Borrwoing.returnDate
+from Members
+inner join Borrwoing on Members.ID=Borrwoing.MemberID
+inner join Books on Borrwoing.BookID = Books.ID
+where Borrwoing.returnDate is Null;
+
+
+--13
+select Members.Name, 
